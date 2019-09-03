@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import SignupForm from "./SignupForm";
 import { connect } from "react-redux";
-import { userSignupRequest } from "../actions/users";
+import { userSignupRequest } from "../../actions/users";
 
 const Signup = ({ userSignupRequest }) => {
 	return (
