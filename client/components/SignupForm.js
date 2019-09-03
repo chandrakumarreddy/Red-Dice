@@ -1,5 +1,6 @@
 import React from "react";
 import map from "lodash/map";
+import classNames from "classnames";
 import timeZones from "../data/timezones";
 
 export default class SignupForm extends React.PureComponent {
@@ -10,17 +11,41 @@ export default class SignupForm extends React.PureComponent {
 			email: "",
 			password: "",
 			passwordConfirmation: "",
-			timezone: ""
+			timezone: "",
+			errors: {},
+			loading: false
 		};
 		this.handleChange = this.handleChange.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
 	}
 	handleChange(e) {
-		this.setState({ [e.target.name]: e.target.value });
+		const newErrors = { ...this.state.errors, [e.target.name]: "" };
+		this.setState({ [e.target.name]: e.target.value, errors: newErrors });
 	}
 	onSubmit(e) {
 		e.preventDefault();
-		console.log(this.state);
+		this.setState({ errors: {} });
+		const {
+			username,
+			email,
+			password,
+			passwordConfirmation,
+			timezone
+		} = this.state;
+		this.setState({ loading: true });
+		this.props
+			.userSignupRequest({
+				username,
+				email,
+				password,
+				passwordConfirmation,
+				timezone
+			})
+			.then(
+				() => {},
+				({ response }) =>
+					this.setState({ errors: response.data, loading: false })
+			);
 	}
 	render() {
 		const {
@@ -28,7 +53,9 @@ export default class SignupForm extends React.PureComponent {
 			email,
 			password,
 			passwordConfirmation,
-			timezone
+			timezone,
+			errors,
+			loading
 		} = this.state;
 		const timezoneList = map(timeZones, (val, key) => (
 			<option value={val} key={val}>
@@ -38,7 +65,11 @@ export default class SignupForm extends React.PureComponent {
 		return (
 			<form onSubmit={this.onSubmit}>
 				<h1>Join our community</h1>
-				<div className="form-group">
+				<div
+					className={classNames("form-group", {
+						"has-error": errors.username
+					})}
+				>
 					<label htmlFor="username">Username</label>
 					<input
 						type="text"
@@ -48,8 +79,15 @@ export default class SignupForm extends React.PureComponent {
 						id="username"
 						onChange={this.handleChange}
 					/>
+					{errors.username && (
+						<span className="help-block">{errors.username}</span>
+					)}
 				</div>
-				<div className="form-group">
+				<div
+					className={classNames("form-group", {
+						"has-error": errors.email
+					})}
+				>
 					<label htmlFor="email">Email</label>
 					<input
 						type="text"
@@ -59,8 +97,15 @@ export default class SignupForm extends React.PureComponent {
 						id="email"
 						onChange={this.handleChange}
 					/>
+					{errors.email && (
+						<span className="help-block">{errors.email}</span>
+					)}
 				</div>
-				<div className="form-group">
+				<div
+					className={classNames("form-group", {
+						"has-error": errors.password
+					})}
+				>
 					<label htmlFor="password">Password</label>
 					<input
 						type="password"
@@ -70,8 +115,15 @@ export default class SignupForm extends React.PureComponent {
 						id="password"
 						onChange={this.handleChange}
 					/>
+					{errors.password && (
+						<span className="help-block">{errors.password}</span>
+					)}
 				</div>
-				<div className="form-group">
+				<div
+					className={classNames("form-group", {
+						"has-error": errors.passwordConfirmation
+					})}
+				>
 					<label htmlFor="passwordConfirmation">
 						Password Confirmation
 					</label>
@@ -83,8 +135,17 @@ export default class SignupForm extends React.PureComponent {
 						id="passwordConfirmation"
 						onChange={this.handleChange}
 					/>
+					{errors.passwordConfirmation && (
+						<span className="help-block">
+							{errors.passwordConfirmation}
+						</span>
+					)}
 				</div>
-				<div className="form-group">
+				<div
+					className={classNames("form-group", {
+						"has-error": errors.timezone
+					})}
+				>
 					<label htmlFor="timezone">TimeZone</label>
 					<select
 						className="form-control"
@@ -92,16 +153,22 @@ export default class SignupForm extends React.PureComponent {
 						value={timezone}
 						onChange={this.handleChange}
 						name="timezone"
-						required
 					>
 						<option value="" disabled>
 							select your timezone
 						</option>
 						{timezoneList}
 					</select>
+					{errors.timezone && (
+						<span className="help-block">{errors.timezone}</span>
+					)}
 				</div>
 				<div className="form-group">
-					<button type="submit" className="btn btn-primary btn-block">
+					<button
+						type="submit"
+						className="btn btn-primary btn-block"
+						disabled={loading}
+					>
 						Join
 					</button>
 				</div>
