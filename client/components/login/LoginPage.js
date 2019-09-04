@@ -10,9 +10,9 @@ const LoginPage = ({
 	userLoginRequest,
 	addFlashMessage,
 	history,
-	isAutheticated
+	isAuthenticated
 }) => {
-	return isAutheticated ? (
+	return isAuthenticated ? (
 		<Redirect to="/" />
 	) : (
 		<div className="row">
@@ -31,11 +31,11 @@ LoginPage.propTypes = {
 	userLoginRequest: PropTypes.func.isRequired,
 	addFlashMessage: PropTypes.func.isRequired,
 	history: PropTypes.object.isRequired,
-	isAutheticated: PropTypes.bool.isRequired
+	isAuthenticated: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = state => ({
-	isAutheticated: state.auth.isAuthenticated
+	isAuthenticated: state.auth.isAuthenticated
 });
 
 export default connect(
