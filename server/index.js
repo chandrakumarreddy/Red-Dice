@@ -2,12 +2,15 @@ import express from "express";
 import path from "path";
 import mongoose from "mongoose";
 
+require("dotenv").config();
+
 import webpack from "webpack";
 import webpackMiddleware from "webpack-dev-middleware";
 import webpackHotMiddleware from "webpack-hot-middleware";
 import webpackConfig from "../webpack.config.dev";
 
 import usersRouter from "./routes/user";
+import authRouter from "./routes/auth";
 
 mongoose.connect("mongodb://localhost:27017/reddice", {
 	useNewUrlParser: true
@@ -32,6 +35,7 @@ app.use(
 app.use(webpackHotMiddleware(compiler));
 
 app.use("/api/users", usersRouter);
+app.use("/api/auth", authRouter);
 
 app.get("*", (req, res) => {
 	res.sendFile(path.join(__dirname, "index.html"));

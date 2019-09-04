@@ -8,7 +8,7 @@ const FlashMessage = ({ message, deleteFlashMessage }) => {
 		<div
 			className={classNames("alert", {
 				"alert-success": type === "success",
-				"alert-error": type === "error"
+				"alert-danger": type === "error"
 			})}
 		>
 			<button className="close" onClick={() => deleteFlashMessage(id)}>

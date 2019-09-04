@@ -1,8 +1,14 @@
 import express from "express";
+import bcrypt from "bcryptjs";
 import { commonSignUpValidations } from "../shared/validations/signup";
 const userRouter = express.Router();
 import isEmpty from "lodash/isEmpty";
 import User from "../model/user";
+
+async function hashPassword(password) {
+	const salt = await bcrypt.genSalt(10);
+	return bcrypt.hash(password, salt);
+}
 
 async function validateInput(data, dataValidations) {
 	const { errors } = dataValidations(data);
@@ -39,13 +45,14 @@ userRouter.post("/", async (req, res) => {
 		return res.status(400).json(errors);
 	}
 	const { username, email, password, timezone } = req.body;
+	const hash_password = await hashPassword(password);
 	const user = await new User({
 		username,
 		email,
-		password,
+		password: hash_password,
 		timezone
 	}).save();
-	res.status(200).json(user);
+	return res.status(200).json(user);
 });
 
 export default userRouter;
