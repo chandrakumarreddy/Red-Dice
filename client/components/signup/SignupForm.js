@@ -2,7 +2,7 @@ import React from "react";
 import map from "lodash/map";
 import classNames from "classnames";
 import TextFieldGroup from "../common/TextFieldGroup";
-import { validatorInput } from "../../../server/shared/validations/signup";
+import { commonSignUpValidations } from "../../../server/shared/validations/signup";
 import timeZones from "../../data/timezones";
 
 export default class SignupForm extends React.PureComponent {
@@ -25,7 +25,7 @@ export default class SignupForm extends React.PureComponent {
 		this.setState({ [e.target.name]: e.target.value, errors: newErrors });
 	}
 	isValid() {
-		const { errors, isValid } = validatorInput(this.state);
+		const { errors, isValid } = commonSignUpValidations(this.state);
 		if (!isValid) {
 			this.setState({ errors });
 		}

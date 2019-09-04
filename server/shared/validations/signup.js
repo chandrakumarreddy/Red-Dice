@@ -1,7 +1,7 @@
 import Validator from "validator";
 import isEmpty from "lodash/isEmpty";
 
-export const validatorInput = data => {
+export const commonSignUpValidations = data => {
 	const errors = {};
 	if (Validator.isEmpty(data.username)) {
 		errors.username = "This field is Required";
