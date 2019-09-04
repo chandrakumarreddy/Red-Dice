@@ -1,5 +1,6 @@
 import express from "express";
 import path from "path";
+import mongoose from "mongoose";
 
 import webpack from "webpack";
 import webpackMiddleware from "webpack-dev-middleware";
@@ -7,6 +8,17 @@ import webpackHotMiddleware from "webpack-hot-middleware";
 import webpackConfig from "../webpack.config.dev";
 
 import usersRouter from "./routes/users";
+
+mongoose.connect("mongodb://localhost:27017/reddice", {
+	useNewUrlParser: true
+});
+mongoose.connection.on("connected", function() {
+	console.log(connected("Mongoose connected"));
+});
+
+mongoose.connection.on("error", function(err) {
+	console.log(error("Mongoose faied to connect"));
+});
 
 const app = express();
 const compiler = webpack(webpackConfig);

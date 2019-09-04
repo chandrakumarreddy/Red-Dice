@@ -52,7 +52,15 @@ export default class SignupForm extends React.PureComponent {
 					timezone
 				})
 				.then(
-					() => {},
+					() => {
+						this.props.addFlashMessage({
+							type: "success",
+							text: "Successfully logged in"
+						});
+						this.setState({ loading: false }, () =>
+							this.props.history.push("/")
+						);
+					},
 					({ response }) =>
 						this.setState({ errors: response.data, loading: false })
 				);
