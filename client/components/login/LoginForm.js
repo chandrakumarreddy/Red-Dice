@@ -32,6 +32,7 @@ export default class LoginForm extends React.Component {
 				},
 				({ response }) => {
 					if (!response.data.sucess) {
+						this.setState({ identifier: "", password: "" });
 						return this.props.addFlashMessage({
 							type: "error",
 							text: "Invalid credentials.Login Failed"

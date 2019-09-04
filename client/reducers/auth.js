@@ -1,4 +1,4 @@
-import { SET_AUTHORIZATION } from "../types";
+import { SET_AUTHORIZATION, USER_LOGOUT } from "../types";
 import isEmpty from "lodash/isEmpty";
 
 const initialState = {
@@ -14,6 +14,8 @@ export default (state = initialState, action) => {
 				isAuthenticated: !isEmpty(action.user),
 				user: action.user
 			};
+		case USER_LOGOUT:
+			return (state = initialState);
 		default:
 			return state;
 	}

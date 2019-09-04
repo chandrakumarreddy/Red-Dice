@@ -5,6 +5,8 @@ import { createStore, applyMiddleware, compose } from "redux";
 import { Provider } from "react-redux";
 import App from "./components/App";
 import rootReducer from "./reducers";
+import { setUserCredetials } from "./actions/auth";
+import { setAuthorization } from "./utils";
 
 const store = createStore(
 	rootReducer,
@@ -14,6 +16,14 @@ const store = createStore(
 			window.__REDUX_DEVTOOLS_EXTENSION__()
 	)
 );
+
+if (localStorage.getItem("jwtToken")) {
+	const token = localStorage.getItem("jwtToken");
+	store.dispatch(setUserCredetials(token));
+	setAuthorization(token);
+} else {
+	setAuthorization(false);
+}
 
 render(
 	<Provider store={store}>

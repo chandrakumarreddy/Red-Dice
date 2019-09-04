@@ -3,9 +3,10 @@ import { Route } from "react-router-dom";
 import Home from "./components/Home";
 import Signup from "./components/signup/SignupPage";
 import Login from "./components/login/LoginPage";
+import requiredAuth from "./components/common/RequiredAuth";
 
 const routes = [
-	{ path: "/", component: Home, exact: true },
+	{ path: "/", component: requiredAuth(Home), exact: true },
 	{ path: "/signup", component: Signup },
 	{ path: "/login", component: Login }
 ];

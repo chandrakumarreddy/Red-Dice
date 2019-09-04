@@ -1,6 +1,6 @@
 import axios from "axios";
 import jwtDecode from "jwt-decode";
-import { SET_AUTHORIZATION } from "../types";
+import { SET_AUTHORIZATION, USER_LOGOUT } from "../types";
 import { setAuthorization } from "../utils";
 
 export function setUserCredetials(token) {
@@ -17,6 +17,16 @@ export function userLoginRequest(data) {
 			localStorage.setItem("jwtToken", token);
 			setAuthorization(token);
 			dispatch(setUserCredetials(token));
+		});
+	};
+}
+
+export function userLogoutRequest() {
+	return dispatch => {
+		localStorage.removeItem("jwtToken");
+		setAuthorization(false);
+		dispatch({
+			type: USER_LOGOUT
 		});
 	};
 }
